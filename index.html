@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Funtik Design</title>
+<!-- На своём хостинге раскомментируй, чтобы работали данные пользователя, тема и haptic: -->
+<!-- <script src="https://telegram.org/js/telegram-web-app.js"></script> -->
+<style>
+:root{--bg:#0b0706;--tx:#f4ece6;--mu:#a1948b;--ac:#ff5a1f;--gl:rgba(255,255,255,.05);--bd:rgba(255,255,255,.09);--pill:rgba(20,13,10,.78);color-scheme:dark}
+:root[data-theme=light]{--bg:#f6efe9;--tx:#1d1411;--mu:#7a6b61;--gl:rgba(0,0,0,.04);--bd:rgba(0,0,0,.1);--pill:rgba(255,250,246,.85);color-scheme:light}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:radial-gradient(120% 60% at 50% 0,rgba(255,90,31,.2),transparent 60%),var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+#app{max-width:520px;margin:0 auto;padding:calc(env(safe-area-inset-top,0px) + 10px) 14px calc(110px + env(safe-area-inset-bottom,0px))}
+.top{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:20;display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:999px;background:var(--pill);border:1px solid var(--bd);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:.04em;flex:1}
+.logo i{width:22px;height:22px;border:2px solid var(--ac);border-radius:6px;transform:rotate(45deg) scale(.8)}
+.ic{width:32px;height:32px;border-radius:50%;background:var(--gl);border:1px solid var(--bd)}
+.me{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--mu)}
+.me b{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ff8a3d,var(--ac));display:block;background-size:cover}
+.view{display:none;padding-top:22px}.view.on{display:block;animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+@media(prefers-reduced-motion:reduce){.view.on{animation:none}}
+h1{font-size:46px;line-height:1.02;letter-spacing:-.03em;margin:10px 0 12px}
+h2{font-size:26px;letter-spacing:-.02em;margin:34px 0 14px}
+.badge{display:inline-flex;gap:7px;align-items:center;font-size:12px;color:var(--mu);padding:5px 11px;border-radius:99px;background:var(--gl);border:1px solid var(--bd)}
+.badge:before{content:"";width:7px;height:7px;border-radius:50%;background:#3ddc84;box-shadow:0 0 8px #3ddc84}
+.lead{color:var(--mu);max-width:34ch;margin-bottom:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:13px 22px;border-radius:99px;background:var(--gl);border:1px solid var(--bd);font-weight:600;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn.p{background:var(--tx);color:var(--bg);border-color:transparent}
+.card{padding:16px;border-radius:20px;background:var(--gl);border:1px solid var(--bd);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px}
+.stats div{text-align:center;padding:6px}.stats b{display:block;font-size:24px;color:var(--ac)}.stats span{font-size:12px;color:var(--mu)}
+.steps{display:grid;gap:10px;position:relative}
+.steps .card b{display:block;margin-bottom:2px}.steps .card span{color:var(--mu);font-size:13px}
+.hs{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -14px;padding:0 14px 6px;scrollbar-width:none}
+.hs::-webkit-scrollbar{display:none}
+.svc{flex:0 0 74%;scroll-snap-align:start;min-height:170px;display:flex;flex-direction:column}
+.svc h3{font-size:19px}.svc p{color:var(--mu);font-size:13px;margin:4px 0 auto}
+.svc .f{display:flex;justify-content:space-between;align-items:center;margin-top:16px;color:var(--mu)}
+.plus{width:38px;height:38px;border-radius:50%;background:var(--tx);color:var(--bg);font-size:22px;line-height:1}
+.faq{display:grid;gap:8px}
+.q{border-radius:18px;background:var(--gl);border:1px solid var(--bd);overflow:hidden}
+.q button{width:100%;display:flex;justify-content:space-between;padding:15px 16px;text-align:left;font-weight:600}
+.q button:after{content:"+";color:var(--ac);font-size:20px;line-height:1;transition:transform .2s}
+.q.open button:after{transform:rotate(45deg)}
+.q p{display:none;padding:0 16px 15px;color:var(--mu);font-size:14px}.q.open p{display:block}
+.cta{text-align:center;margin-top:30px;padding:26px 18px}
+.cta h3{font-size:22px;margin:10px 0 6px}.cta p{color:var(--mu);font-size:13px;margin-bottom:16px}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 -14px 14px;padding:0 14px;scrollbar-width:none}
+.chip{padding:8px 15px;border-radius:99px;border:1px solid var(--bd);background:var(--gl);color:var(--mu);white-space:nowrap;font-size:14px}
+.chip.on{background:var(--tx);color:var(--bg);border-color:transparent}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.work{aspect-ratio:3/4;border-radius:20px;padding:12px;display:flex;align-items:flex-end;font-size:13px;border:1px solid var(--bd);background:linear-gradient(180deg,rgba(255,90,31,.14),rgba(0,0,0,.45)),var(--gl)}
+.ord{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}
+.ord b{display:block}.ord span{font-size:12px;color:var(--mu)}
+.st{display:flex;align-items:center;gap:8px}
+.st button{width:34px;height:34px;border-radius:10px;background:var(--gl);border:1px solid var(--bd);font-size:18px}
+.st output{min-width:30px;text-align:center;font:700 20px ui-monospace,monospace;color:var(--ac)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;border-radius:99px;background:var(--gl);border:1px solid var(--bd);margin:12px 0}
+.seg button{padding:11px;border-radius:99px;color:var(--mu)}.seg .on{background:var(--tx);color:var(--bg);font-weight:600}
+textarea{width:100%;min-height:72px;resize:none;padding:14px;border-radius:18px;background:var(--gl);border:1px solid var(--bd);color:var(--tx);font:inherit;outline:0}
+textarea:focus-visible{border-color:var(--ac)}
+.bar{height:6px;border-radius:9px;background:var(--bd);margin:10px 0;overflow:hidden}.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+.tot{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--mu)}.tot b{font-size:26px;color:var(--tx)}
+.lnk{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:8px;width:100%;text-align:left}
+.lnk em{font-style:normal;width:38px;height:38px;border-radius:11px;background:var(--gl);border:1px solid var(--bd);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--ac)}
+.lnk div{flex:1}.lnk b{display:block}.lnk span{font-size:12px;color:var(--mu)}
+.inf{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd);font-size:14px;gap:16px}.inf:last-child{border:0}.inf span{color:var(--mu)}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;gap:2px;padding:6px;border-radius:99px;background:var(--pill);border:1px solid var(--bd);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.nav button{width:74px;padding:9px 0 7px;border-radius:99px;font-size:11px;color:var(--mu);display:grid;justify-items:center;gap:3px}
+.nav button.on{color:var(--tx);background:var(--gl);box-shadow:inset 0 0 0 1px var(--bd),0 0 18px rgba(255,90,31,.25)}
+.nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:99px;font-size:14px;transition:.25s;z-index:40}.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="top">
+    <div class="logo"><i></i>FUNTIK</div>
+    <button class="ic" id="theme" aria-label="Сменить тему"></button>
+    <div class="me"><b id="ava"></b><span id="uname">@username</span></div>
+  </header>
+
+  <main>
+  <section class="view on" id="v-home">
+    <span class="badge">Открыт для заказов</span>
+    <h1 id="name">Funtik Design</h1>
+    <p class="lead">Аватарки, баннеры и превью для каналов. Чисто, быстро и со вкусом.</p>
+    <div class="row"><button class="btn p" data-go="order">Заказать</button><button class="btn" data-write>Написать</button></div>
+
+    <h2>Обо мне</h2>
+    <div class="card">Делаю визуал для каналов и проектов: аватарки, баннеры и превью, которые выглядят дорого и решают задачу.</div>
+
+    <h2>Как мы работаем</h2>
+    <div class="steps">
+      <div class="card"><b>1. Бриф</b><span>Обсуждаем задачу, референсы и сроки</span></div>
+      <div class="card"><b>2. Работа</b><span>Делаю основной объём и присылаю промежуточный результат</span></div>
+      <div class="card"><b>3. Финал</b><span>Вношу правки по договорённости и передаю файлы</span></div>
+    </div>
+
+    <h2>Услуги</h2>
+    <div class="hs" id="svcs"></div>
+
+    <h2>Вопросы</h2>
+    <div class="faq" id="faq"></div>
+
+    <div class="card cta"><h3>Начнём проект?</h3><p>Опишите задачу, и я предложу решение, срок и цену.</p>
+      <div class="row" style="justify-content:center"><button class="btn p" data-go="order">Оформить заказ</button><button class="btn" data-write>Написать</button></div></div>
+  </section>
+
+  <section class="view" id="v-works">
+    <h2 style="margin-top:0">Портфолио</h2>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="works"></div>
+    <button class="btn p" data-u="https://t.me/Funt1kPortfolio" style="width:100%;margin-top:14px">Смотреть портфолио в канале</button>
+  </section>
+
+  <section class="view" id="v-order">
+    <h2 style="margin-top:0">Заказ</h2>
+    <div class="card" style="padding:4px 0" id="ord"></div>
+    <div class="seg" id="rush"><button class="on" data-r="0">Обычный срок</button><button data-r="1">Срочно +50%</button></div>
+    <textarea id="task" placeholder="Коротко опишите задачу"></textarea>
+    <div class="card" style="margin-top:12px">
+      <div class="tot"><span id="hint">Выберите услуги выше</span></div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="tot"><span>Итого</span><b id="sum">0 $</b></div>
+    </div>
+    <button class="btn p" id="send" style="width:100%;margin-top:12px;opacity:.5">Отправить заказ</button>
+  </section>
+
+  <section class="view" id="v-links">
+    <h2 style="margin-top:0">Каналы и соцсети</h2>
+    <div id="lk"></div>
+    <h2>Информация</h2>
+    <div class="card" id="info"></div>
+  </section>
+  </main>
+</div>
+
+<nav class="nav" id="nav">
+  <button class="on" data-v="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Главная</button>
+  <button data-v="works"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Работы</button>
+  <button data-v="order"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>Заказ</button>
+  <button data-v="links"><svg viewBox="0 0 24 24"><path d="M21 3L3 10.5l6.5 2.5L12 20z"/><path d="M9.5 13L21 3"/></svg>Связь</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== НАСТРОЙКИ: меняй здесь ===== */
+const CFG={
+  name:"Funtik Design",
+  contact:"FuntikGood",              // твой @username без @
+  services:[
+    {id:"ava",t:"Аватарка",d:"Уникальный образ для канала или профиля",p:2},
+    {id:"ban",t:"Баннер",d:"Оформление шапки под ваш проект",p:2.5},
+    {id:"prev",t:"Превью",d:"Обложка для видео или поста",p:2.5}
+  ],
+  cats:["Все","Аватарки","Баннеры","Превью"],
+  works:[["Работа 01",1],["Работа 02",2],["Работа 03",3],["Работа 04",1],["Работа 05",2],["Работа 06",3],["Работа 07",1],["Работа 08",2]],
+  faq:[["Как заказать?","Выберите услуги во вкладке «Заказ» и отправьте заявку, откроется чат со мной."],["Как проходит оплата?","Обсудим в личных сообщениях после заявки."],["Можно ли вносить правки?","Да, детали правок согласуем в чате."]],
+  links:[["PF","Портфолио","Все работы в канале","https://t.me/Funt1kPortfolio"],["★","Отзывы","Что говорят клиенты","https://t.me/Funt1kPortfolio/13"]],
+  info:[["Ответ","Обычно в течение дня"],["Языки","Русский, English"]],
+  discountFrom:10
+};
+/* ================================== */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const tg=window.Telegram&&Telegram.WebApp;
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),1800)};
+const hap=()=>{try{tg.HapticFeedback.impactOccurred("light")}catch(e){}};
+const write=text=>{const u="https://t.me/"+CFG.contact+(text?"?text="+encodeURIComponent(text):"");tg&&tg.openTelegramLink?tg.openTelegramLink(u):window.open(u,"_blank")};
+
+if(tg){tg.ready();tg.expand();const u=tg.initDataUnsafe&&tg.initDataUnsafe.user;
+  if(u){$("#uname").textContent=u.username?"@"+u.username:u.first_name;if(u.photo_url)$("#ava").style.backgroundImage="url("+u.photo_url+")"}
+  if(tg.colorScheme==="light")document.documentElement.dataset.theme="light"}
+$("#name").textContent=CFG.name;
+$("#theme").onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==="light"?"dark":"light";hap()};
+
+/* навигация */
+function go(v){$$(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+v));$$("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));scrollTo(0,0);hap()}
+$$("#nav button").forEach(b=>b.onclick=()=>go(b.dataset.v));
+$$("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+$$("[data-write]").forEach(b=>b.onclick=()=>write(""));
+
+/* услуги, FAQ */
+const qty={};CFG.services.forEach(s=>qty[s.id]=0);
+$("#svcs").innerHTML=CFG.services.map(s=>`<div class="card svc"><h3>${s.t}</h3><p>${s.d}</p><div class="f"><span>${s.p} $</span><button class="plus" data-add="${s.id}" aria-label="Добавить ${s.t}">+</button></div></div>`).join("");
+$$("[data-add]").forEach(b=>b.onclick=()=>{qty[b.dataset.add]++;calc();go("order");toast("Добавлено в заказ")});
+$("#faq").innerHTML=CFG.faq.map(f=>`<div class="q"><button>${f[0]}</button><p>${f[1]}</p></div>`).join("");
+$$(".q button").forEach(b=>b.onclick=()=>{b.parentNode.classList.toggle("open");hap()});
+
+/* работы */
+let cat=0;
+$("#chips").innerHTML=CFG.cats.map((c,i)=>`<button class="chip${i?"":" on"}" data-c="${i}">${c}</button>`).join("");
+function drawWorks(){$("#works").innerHTML=CFG.works.filter(w=>!cat||w[1]===cat).map(w=>`<div class="work">${w[0]}</div>`).join("")}
+$$(".chip").forEach(c=>c.onclick=()=>{cat=+c.dataset.c;$$(".chip").forEach(x=>x.classList.toggle("on",x===c));drawWorks();hap()});
+drawWorks();
+
+/* заказ */
+let rush=0;
+$("#ord").innerHTML=CFG.services.map(s=>`<div class="ord"><div><b>${s.t}</b><span>${s.p} $</span></div><div class="st"><button data-m="${s.id}" aria-label="Меньше">−</button><output id="q-${s.id}">0</output><button data-p="${s.id}" aria-label="Больше">+</button></div></div>`).join("");
+$$("[data-m]").forEach(b=>b.onclick=()=>{if(qty[b.dataset.m]>0)qty[b.dataset.m]--;calc();hap()});
+$$("[data-p]").forEach(b=>b.onclick=()=>{qty[b.dataset.p]++;calc();hap()});
+$$("#rush button").forEach(b=>b.onclick=()=>{rush=+b.dataset.r;$$("#rush button").forEach(x=>x.classList.toggle("on",x===b));calc()});
+let total=0;
+function calc(){
+  let base=0;CFG.services.forEach(s=>{base+=qty[s.id]*s.p;$("#q-"+s.id).textContent=qty[s.id]});
+  if(rush)base*=1.5;
+  const disc=base>=CFG.discountFrom;total=Math.round((disc?base*.9:base)*100)/100;
+  $("#sum").textContent=total+" $";
+  $("#bar").style.width=Math.min(100,base/CFG.discountFrom*100)+"%";
+  $("#hint").textContent=!base?"Выберите услуги выше":disc?"Скидка 10% применена":"До скидки 10% осталось "+(Math.round((CFG.discountFrom-base)*100)/100)+" $";
+  $("#send").style.opacity=base?1:.5;
+}
+$("#send").onclick=()=>{
+  if(!total)return toast("Добавьте хотя бы одну услугу");
+  const lines=CFG.services.filter(s=>qty[s.id]).map(s=>`• ${s.t} × ${qty[s.id]}`);
+  const t=$("#task").value.trim();
+  write(["Здравствуйте! Хочу заказать:",...lines,rush?"Срочно (+50%)":"Обычный срок","Итого: "+total+" $",t?"Задача: "+t:""].filter(Boolean).join("\n"));
+};
+calc();
+
+/* связь */
+$("#lk").innerHTML=CFG.links.map(l=>`<button class="card lnk" data-u="${l[3]}"><em>${l[0]}</em><div><b>${l[1]}</b><span>${l[2]}</span></div>›</button>`).join("");
+$$("[data-u]").forEach(b=>b.onclick=()=>{const u=b.dataset.u;u.includes("t.me")&&tg?tg.openTelegramLink(u):tg?tg.openLink(u):window.open(u,"_blank")});
+$("#info").innerHTML=CFG.info.map(i=>`<div class="inf"><span>${i[0]}</span><b>${i[1]}</b></div>`).join("");
+</script>
+</body>
+</html>
